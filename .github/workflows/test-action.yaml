@@ -1,0 +1,16 @@
+name: Test action
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: orgflow/cli:1.x
+
+    steps:
+      - uses: orgflow-actions/set-salesforce-auth@dev
+        with:
+          stack-name: Main
+          username: ${{ secrets.SALESFORCE_USERNAME }}
+          password: ${{ secrets.SALESFORCE_PASSWORD }}
+          license-key: ${{ secrets.ORGFLOW_LICENSEKEY }}
