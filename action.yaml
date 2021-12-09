@@ -6,24 +6,24 @@ branding:
   color: 'red'
 inputs:
   stack-name:
-    description: 'Name of the stack that contains the environment.'
+    description: "Name of the stack that contains the environment."
     required: true
     default: 'Main'
   environment-name:
-    description: 'Name of the environment.'
+    description: "Name of the environment."
     required: true
   commit-message:
-    description: 'Optionally override the default message applied to the commits.'
+    description: "Optionally override the default message applied to the commits."
     required: false
   force:
-    description: 'Force commit (bypass OrgFlow's merging strategy and commit the meatadata from Salesforce as it is, even if the Git repository is ahead of your Salesforce org)? Type 'true' to enable.'
+    description: "Force commit (bypass OrgFlow's merging strategy and commit the meatadata from Salesforce as it is, even if the Git repository is ahead of your Salesforce org)? Type `true` to enable."
     required: true
     default: 'false'
   license-key:
-    description: 'Your OrgFlow license key. You can get a license key from https://www.orgflow.io if you do not already have one.'
+    description: "Your OrgFlow license key. You can get a license key from https://www.orgflow.io if you do not already have one."
     required: true
   encryption-key:
-    description: 'The encryption key that was used to save your Salesforce credentials.'
+    description: "The encryption key that was used to save your Salesforce credentials."
     required: true
 outputs:
   random-number:
