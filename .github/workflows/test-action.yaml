@@ -5,7 +5,10 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    container: orgflow/cli:1.x
+    container: 
+      image: orgflow/cli:1.x
+      env:
+        ORGFLOW_ACCEPTEULA: true
 
     steps:
       - uses: orgflow-actions/set-salesforce-auth@dev
