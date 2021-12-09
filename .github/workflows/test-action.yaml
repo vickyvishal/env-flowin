@@ -9,8 +9,10 @@ jobs:
 
     steps:
       - uses: orgflow-actions/set-salesforce-auth@dev
+        id: set-auth
         with:
           stack-name: Main
           username: ${{ secrets.SALESFORCE_USERNAME }}
           password: ${{ secrets.SALESFORCE_PASSWORD }}
           license-key: ${{ secrets.ORGFLOW_LICENSEKEY }}
+      - run: echo ${{ steps.set-auth.outputs.encryption-key }}
