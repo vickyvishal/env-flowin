@@ -25,10 +25,6 @@ inputs:
   encryption-key:
     description: "The encryption key that was used to save your Salesforce credentials."
     required: true
-#outputs:
-#  random-number:
-#    description: "Random number"
-#    value: ${{ steps.random-number-generator.outputs.random-id }}
 runs:
   using: "composite"
   steps:
@@ -39,8 +35,9 @@ runs:
     - uses: OrgFlow-Actions/verify-orgflow-is-available@v1
     - id: env-flowin
       name: Run env:flowin
-      run: echo "::set-output name=random-id::$(orgflow env:flowin)"
+      run: orgflow env:flowin -e="${{ inputs.environment-name }}" -m="${{ inputs.commit-message }}" `if [ ${{ inputs.force }} -eq true ]; then echo "--force"; fi`
       env:
+        ORGFLOW_STACKNAME: ${{ inputs.stack-name }}
         ORGFLOW_LICENSEKEY: ${{ inputs.license-key }}
         ORGFLOW_ENCRYPTIONKEY: ${{ inputs.encryption-key }}
       shell: bash
