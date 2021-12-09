@@ -35,7 +35,7 @@ runs:
     - id: mask-values
       name: Mask sensitive values
       run: echo "::add-mask::${{ inputs.license-key }}" && echo "::add-mask::${{ inputs.encryption-key }}"
-    - using: orgflow-actions/verify-orgflow-is-available@v1
+    - using: OrgFlow-Actions/verify-orgflow-is-available@v1
     - id: env-flowin
       name: Run env:flowin
       run: echo "::set-output name=random-id::$(orgflow env:flowin)"
