@@ -1,4 +1,4 @@
-name: 'OrgFlow - Flow an environment in'
+name: 'OrgFlow - Flow in (commit the metadata from a Salesforce org to your Git repository)'
 author: 'OrgFlow'
 description: 'Commit the metadata in your Salesforce org to a Git repository.'
 branding:
