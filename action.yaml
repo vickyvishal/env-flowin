@@ -56,14 +56,7 @@ runs:
       run: |
         json=$(orgflow env:flowin --output=json -e="${{ inputs.environment-name }}" -m="${{ inputs.commit-message }}" $(if [ ${{ inputs.force }} -eq true ]; then echo "--force"; fi))
         
-        echo $json
-        
-        #echo "::set-output name=flow-in-from::$(echo $json | jq '.result.environments.from.flowIn' -c)"
-        #echo "::set-output name=flow-in-into::$(echo $json | jq '.result.environments.into.flowIn' -c)"
-        #echo "::set-output name=flow-out-into::$(echo $json | jq '.result.environments.into.flowOut | del(.retrieve) | del(.result.attempts) | del(.result.components)' -c)"
-        #echo "::set-output name=deployable-components::$(echo $json | jq '.result.environments.into.flowOut.result.components.succeeded' -c)"
-        #echo "::set-output name=undeployable-components::$(echo $json | jq '.result.environments.into.flowOut.result.components.failed' -c)"
-      
+        echo "::set-output name=result::$(echo $json | jq '.' -c)"      
       env:
         ORGFLOW_STACKNAME: ${{ inputs.stack-name }}
         ORGFLOW_LICENSEKEY: ${{ inputs.license-key }}
