@@ -31,9 +31,6 @@ inputs:
   license-key:
     description: "Your OrgFlow license key. You can get a license key from https://www.orgflow.io if you do not already have one."
     required: true
-  encryption-key:
-    description: "The encryption key that was used to save your Salesforce credentials."
-    required: true
 outputs:
   flow-in-from:
     description: "An array of JSON objects representing the results of the inbound flow of the source environment."
