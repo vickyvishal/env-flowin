@@ -1,0 +1,64 @@
+name: 'OrgFlow - Flow in (commit the metadata from a Salesforce org to your Git repository)'
+author: 'OrgFlow'
+description: 'Manage your Salesforce deployments with OrgFlow- this action commits the metadata in your Salesforce org to a Git repository.'
+branding:
+  icon: 'check-square'
+  color: 'red'
+inputs:
+  stack-name:
+    description: "Name of the stack that contains the environment."
+    required: true
+    default: 'Main'
+  environment-name:
+    description: "Name of the environment."
+    required: true
+  commit-message:
+    description: "Optionally override the default message applied to the commits."
+    required: false
+  force:
+    description: "Force commit (bypass OrgFlow's merging strategy and commit the meatadata from Salesforce as it is, even if the Git repository is ahead of your Salesforce org)? Type `true` to enable."
+    required: true
+    default: 'false'   
+  salesforce-username:
+    description: "Username used to authenticate with your production Salesforce org:"
+    required: true
+  salesforce-password:
+    description: "Password used to authenticate with your production Salesforce org:"
+    required: true
+  git-token: 
+    description: "Token or password to use during authentication (most likely 'secrets.GITHUB_TOKEN')."
+    required: true
+  license-key:
+    description: "Your OrgFlow license key. You can get a license key from https://www.orgflow.io if you do not already have one."
+    required: true
+outputs:
+  flow-in-from:
+    description: "An array of JSON objects representing the results of the inbound flow of the source environment."
+    value: ${{ steps.env-merge.outputs.flow-in-from }}
+runs:
+  using: "composite"
+  steps:    
+    - uses: OrgFlow-Actions/verify-orgflow-is-available@v1
+      name: Verify that OrgFlow is available      
+    - uses: orgflow-actions/configure-git@v1
+      name: Configure Git
+      with:
+        token: ${{ inputs.git-token }}
+    - uses: orgflow-actions/set-salesforce-auth@v1
+      id: set-salesforce-auth
+      name: Cache Salesforce credentials
+      with:
+        username: ${{ inputs.salesforce-username }}  
+        password: ${{ inputs.salesforce-password }}  
+        license-key: ${{ inputs.license-key }}
+    - id: env-flowin
+      name: Flow in environment
+      run: |
+        json=$(orgflow env:flowin --output=json -e="${{ inputs.environment-name }}" -m="${{ inputs.commit-message }}" $(if [ ${{ inputs.force }} -eq true ]; then echo "--force"; fi))
+        
+        echo "::set-output name=result::$(echo $json | jq '.' -c)"      
+      env:
+        ORGFLOW_STACKNAME: ${{ inputs.stack-name }}
+        ORGFLOW_LICENSEKEY: ${{ inputs.license-key }}
+        ORGFLOW_ENCRYPTIONKEY: ${{ steps.set-salesforce-auth.outputs.encryption-key }}
+      shell: bash
