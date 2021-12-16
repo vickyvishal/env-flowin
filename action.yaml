@@ -54,7 +54,7 @@ runs:
     - id: env-flowin
       name: Flow in environment
       run: |
-        json=$(orgflow env:flowin -e="${{ inputs.environment-name }}" -m="${{ inputs.commit-message }}" $(if [ ${{ inputs.force }} -eq true ]; then echo "--force"; fi))
+        json=$(orgflow env:flowin --output=json -e="${{ inputs.environment-name }}" -m="${{ inputs.commit-message }}" $(if [ ${{ inputs.force }} -eq true ]; then echo "--force"; fi))
         
         echo $json
         
