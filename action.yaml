@@ -32,7 +32,7 @@ inputs:
     description: "Your OrgFlow license key. You can get a license key from https://www.orgflow.io if you do not already have one."
     required: true
 outputs:
-  flow-in-from:
+  result:
     description: "An array of JSON objects representing the results of the inbound flow of the source environment."
     value: ${{ steps.env-flowin.outputs.result }}
 runs:
