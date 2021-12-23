@@ -19,78 +19,112 @@ Use OrgFlow to commit the metadata in your Salesforce org to a branch in a Git r
 
 | Name | Description |
 | - | - |
-| `flow-in-from` |  A string of JSON that represents the results of the inbound flow of the source environment (see below). |
-| `flow-in-into` |  A string of JSON that represents the results of the inbound flow of the target environment (see below). |
-| `flow-out-into` |  A string of JSON that represents the results of the outbound flow of the target environment (see below). |
-| `deployable-components` |  A string of JSON that represents the components that were (or could be) deployed (see below). |
-| `undeployable-components` |  A string of JSON that represents the components that were not (or could not be) deployed (see below). |
+| `result` |  A string of JSON that represents the results of the inbound flow (see below). |
 
 All JSON strings can be converted to a JSON object or a JSON data type by using the [`fromJSON(value)`](https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson) function. You can also use `jq` to manipulate or filter this data.
 
-### `flow-in-from` & `flow-in-into`
+### `result`
 
 Example output (formatted for readability- actual output does not contain the new line or whitespace formatting):
 
 ```json
 {
-  "result": {
-    "commitResult": {
-      "files": []
+  "result":{
+    "commitResult":{
+      "files":[
+        {
+          "filePath":"unpackaged/objects/Account.object",
+          "renamedFrom":null,
+          "changeType":129,
+          "commit":{
+            "hash":"c8b65bd3f81a67dc63efa78e4d216013cc34a5f2",
+            "author":{
+              "name":"Billy Mill",
+              "email":"00509000008XvVNAA0"
+            }
+          },
+          "isNonItem":false,
+          "component":{
+            "id":"",
+            "namespacePrefix":null,
+            "type":"CustomObject",
+            "name":"Account"
+          }
+        },
+        {
+          "filePath":"unpackaged/layouts/Account-Account Layout.layout",
+          "renamedFrom":null,
+          "changeType":129,
+          "commit":{
+            "hash":"3153c714825701e66bf853eaba99dc50c025acb8",
+            "author":{
+              "name":"Billy Mill",
+              "email":"00509000008XvVNAA0"
+            }
+          },
+          "isNonItem":false,
+          "component":{
+            "id":"00h0900000DdOV0AAN",
+            "namespacePrefix":null,
+            "type":"Layout",
+            "name":"Account-Account Layout"
+          }
+        }
+      ]
     }
   },
-  "stats": {
-    "retrieve": {
-      "counts": {
-        "packages": 1,
-        "components": 368,
-        "batches": 1,
-        "bytes": 237171
+  "stats":{
+    "retrieve":{
+      "counts":{
+        "packages":1,
+        "components":362,
+        "batches":1,
+        "bytes":234714
       },
-      "duration": "00:00:14.8735796"
+      "duration":"00:00:14.3269632"
     },
-    "apply": {
-      "componentCounts": {
-        "total": 1173,
-        "added": 0,
-        "copied": 1173,
-        "deleted": 0,
-        "excluded": 0
+    "apply":{
+      "componentCounts":{
+        "total":1522,
+        "added":1,
+        "copied":1153,
+        "deleted":0,
+        "excluded":368
       },
-      "duration": "00:00:00.2597250"
+      "duration":"00:00:00.2464416"
     },
-    "commit": {
-      "counts": {
-        "filesCommitted": 0,
-        "commits": 0
+    "commit":{
+      "counts":{
+        "filesCommitted":2,
+        "commits":2
       },
-      "duration": "00:00:00"
+      "duration":"00:00:01.8135295"
     },
-    "duration": "00:00:23.3408468"
+    "duration":"00:00:24.1976562"
   }
 }
 ```
 
 ### Examples
 
-Use `orgflow-actions/env-flowmerge` to merge two environmets and deploy the result to Salesforce:
+
+Use `orgflow-actions/env-flowin` to merge two environmets and deploy the result to Salesforce:
 
 ```yaml
 jobs:
-  env-flowmerge:
-    name: "Merge environments"
+  env-flowin:
+    name: "Flow in an environment"
     runs-on: ubuntu-latest    
     container: 
       image: orgflow/cli:latest
       env:
         ORGFLOW_ACCEPTEULA: true
     steps:
-    - uses: orgflow-actions/env-flowmerge@v1
+    - uses: orgflow-actions/env-flowin@v1
       id: env-flowmerge
       with:
         stack-name: Main
-        source-envronment: QA
-        target-envronment: Production
-        check-only: false
+        envronment-name: QA
         salesforce-username: ${{ secrets.SALESFORCE_USERNAME }}
         salesforce-password: ${{ secrets.SALESFORCE_PASSWORD }}
         git-token: ${{ secrets.GITHUB_TOKEN }}
