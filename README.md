@@ -121,7 +121,7 @@ jobs:
         ORGFLOW_ACCEPTEULA: true
     steps:
     - uses: orgflow-actions/env-flowin@v1
-      id: env-flowmerge
+      id: env-flowin
       with:
         stack-name: Main
         envronment-name: QA
